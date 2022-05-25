@@ -10,14 +10,10 @@ def sendSonarqube(){
   dockerRun("yarn install sonar-scanner && npx sonar-scanner sonar.host.url=${env.SONAR_HOST_URL}")
 }
 
-def setAWSCredentials(){
-  dockerRun("aws configure set aws_access_key_id AKIAXX42ADRROSCS2KAE && \
-            aws configure set aws_secret_access_key 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 && \
-            aws configure set default_region_name us-east-2")
-}
-
 def deployLambda(){
-  dockerRun("yarn deploy")
+  dockerRun("yarn global add serverless && \
+            serverless config credentials --provider aws --key AKIAXX42ADRROSCS2KAE --secret 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 && \
+            yarn deploy --stage dev")
 }
 
 return this

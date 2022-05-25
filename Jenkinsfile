@@ -36,7 +36,6 @@ pipeline {
         stage('Deploy Lambda'){
             steps{
               script{
-                utils.setAWSCredentials()
                 utils.deployLambda()
               }
             }
