@@ -1,0 +1,40 @@
+service:
+  name: "portadorService"
+
+plugins:
+  - serverless-offline
+  - serverless-webpack
+  - serverless-dynamodb-local
+
+custom:
+  webpack:
+      webpackConfig: ./webpack.config.js
+      includeModules: true
+  package:
+  individually: true  
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  timeout: 30
+  region: us-east-2
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource: "*"  
+    - Effect: Allow
+      Action:
+        - sns:Publish
+      Resource: arn:aws:sns:us-east-2:532362042466:create-account
+
+functions:
+  CreatePortador:
+    handler: src/functions/CreatePortador.handler
+    events:
+      - http:
+          path: /createPortador
+          method: POST
+          cors: true
+                        
+
